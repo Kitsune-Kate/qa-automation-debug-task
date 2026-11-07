@@ -13,7 +13,7 @@ public class WebFormPage {
     private String expectedText;
 
     public WebFormPage fillForm(String text) {
-        expectedText = textInput.getValue();
+        expectedText = text;
         textInput.setValue(text);
         checkbox
                 .setSelected(true)
