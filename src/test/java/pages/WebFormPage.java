@@ -2,32 +2,46 @@ package pages;
 
 import com.codeborne.selenide.SelenideElement;
 
-import static com.codeborne.selenide.Condition.checked;
-import static com.codeborne.selenide.Condition.value;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.byName;
 import static com.codeborne.selenide.Selenide.$;
 
 public class WebFormPage {
 
-    private final SelenideElement textInput = $("[name='my-text']");
-    private final SelenideElement checkbox = $("[name='my-check']");
-    private String expectedText;
+    private final SelenideElement pageTitle = $("h1");
+    private final SelenideElement textInput = $(byName("my-text"));
+    private final SelenideElement checkbox = $(byName("my-check"));
+    private final SelenideElement submitButton = $("button[type='submit']");
+    private final SelenideElement successMessage = $("#message");
 
-    public WebFormPage fillForm(String text) {
-        expectedText = textInput.getValue();
-        textInput.setValue(text);
-        checkbox
-                .setSelected(true)
-                .shouldBe(checked);
+    public WebFormPage verifyPageOpened() {
+        pageTitle
+                .shouldBe(visible)
+                .shouldHave(text("Web form"));
         return this;
     }
 
-    public WebFormPage verifyForm() {
+    public WebFormPage fillForm(String text) {
+        textInput.setValue(text);
+        checkbox.setSelected(true);
+        return this;
+    }
+
+    public WebFormPage verifyForm(String expectedText) {
         textInput.shouldHave(value(expectedText));
+        checkbox.shouldBe(checked);
         return this;
     }
 
     public WebFormPage submit() {
-        $("button").click();
+        submitButton.click();
+        return this;
+    }
+
+    public WebFormPage verifySuccessMessage(String expectedText) {
+        successMessage
+                .shouldBe(visible)
+                .shouldHave(text(expectedText));
         return this;
     }
 }
