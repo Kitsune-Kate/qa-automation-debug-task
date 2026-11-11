@@ -11,8 +11,8 @@ public abstract class WebFixture {
 
     @AfterMethod(alwaysRun = true)
     public void teardown() {
-        Selenide.closeWebDriver();
         SessionId sessionId = ((RemoteWebDriver) WebDriverRunner.getWebDriver()).getSessionId();
         Report.attachSessionInfo(sessionId);
+        Selenide.closeWebDriver();
     }
 }
